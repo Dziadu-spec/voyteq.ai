@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>voyteq.ai — countdown</title>
+
+  <style>
+    @font-face {
+      font-family: "Orbitron";
+      src: url("Orbitron-Medium.ttf") format("truetype");
+      font-weight: 500;
+      font-style: normal;
+    }
+
+    :root {
+      --text: #ffffff;
+      --muted: #cfcfcf;
+      --accent: #9f9f9f;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      color: var(--text);
+      font-family: "Orbitron", Arial, sans-serif;
+      overflow: hidden;
+      background: radial-gradient(circle at 20% 30%, #0a0a0a 0%, #000 90%) fixed;
+    }
+
+    /* === GWIEŹDZISTE NIEBO === */
+    .stars, .stars2, .stars3 {
+      position: fixed;
+      inset: 0;
+      background-repeat: repeat;
+      background-size: 600px 600px;
+      animation: moveStars linear infinite;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .stars {
+      background-image:
+        radial-gradient(2px 2px at 10px 10px, #ffffff 1px, transparent 0),
+        radial-gradient(2px 2px at 80px 200px, #fff 1px, transparent 0),
+        radial-gradient(1.5px 1.5px at 300px 150px, #ddd 1px, transparent 0),
+        radial-gradient(2px 2px at 500px 400px, #ffffff 1px, transparent 0),
+        radial-gradient(1px 1px at 250px 250px, #ccccff 1px, transparent 0);
+      opacity: 0.4;
+      animation-duration: 40s; /* 🔹 szybciej */
+    }
+
+    .stars2 {
+      background-image:
+        radial-gradient(1.5px 1.5px at 20px 20px, #cfdfff 1px, transparent 0),
+        radial-gradient(1.5px 1.5px at 120px 340px, #d0e0ff 1px, transparent 0),
+        radial-gradient(1px 1px at 400px 200px, #c0d0ff 1px, transparent 0),
+        radial-gradient(1.5px 1.5px at 550px 100px, #f0f8ff 1px, transparent 0),
+        radial-gradient(1px 1px at 250px 500px, #d8e8ff 1px, transparent 0);
+      opacity: 0.3;
+      animation-duration: 70s; /* 🔹 szybciej */
+    }
+
+    .stars3 {
+      background-image:
+        radial-gradient(1px 1px at 30px 30px, #88bbff 1px, transparent 0),
+        radial-gradient(1px 1px at 200px 500px, #aaddff 1px, transparent 0),
+        radial-gradient(1px 1px at 400px 300px, #99ccff 1px, transparent 0),
+        radial-gradient(1px 1px at 550px 150px, #77aaff 1px, transparent 0),
+        radial-gradient(1px 1px at 320px 420px, #aaccff 1px, transparent 0);
+      opacity: 0.25;
+      animation-duration: 110s; /* 🔹 szybciej */
+    }
+
+    @keyframes moveStars {
+      from { background-position: 0 0; }
+      to { background-position: -600px 600px; }
+    }
+
+    /* === TREŚĆ === */
+    .wrap {
+      position: relative;
+      z-index: 2;
+      min-height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 36px;
+      padding: 48px;
+      box-sizing: border-box;
+      text-align: center;
+    }
+
+    .brand {
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      font-size: clamp(36px, 10vw, 96px);
+      line-height: 1.15;
+      text-transform: lowercase;
+      margin: 0;
+      padding-bottom: 0.2em;
+      display: inline-block;
+      overflow: visible;
+      background: linear-gradient(90deg, #ccc, #fff, #999, #fff, #ccc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-size: 300%;
+      animation: metallic 8s linear infinite;
+      text-shadow: 0 0 20px rgba(255,255,255,0.1);
+    }
+
+    @keyframes metallic {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+
+    .countdown {
+      font-size: clamp(16px, 3.2vw, 28px);
+      color: var(--muted);
+      margin: 0;
+      letter-spacing: 0.05em;
+      font-weight: 400;
+      text-shadow: 0 0 12px rgba(255,255,255,0.1);
+    }
+
+    .subtitle {
+      font-size: clamp(12px, 2vw, 18px);
+      color: var(--accent);
+      font-style: italic;
+      letter-spacing: 0.05em;
+      margin-top: 12px;
+      opacity: 0.85;
+      transition: opacity 0.3s ease;
+    }
+
+    .subtitle:hover {
+      opacity: 1;
+    }
+
+    @media (max-width: 520px) {
+      .wrap { gap: 24px; padding: 28px; }
+      .brand { font-size: clamp(28px, 12vw, 56px); }
+      .countdown { font-size: 16px; }
+      .subtitle { font-size: 13px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="stars"></div>
+  <div class="stars2"></div>
+  <div class="stars3"></div>
+
+  <div class="wrap">
+    <h1 class="brand">voyteq.ai</h1>
+    <p id="countdown" class="countdown">Loading...</p>
+    <p class="subtitle">
+      Reimage neural intelligence.<br>
+      Learn more at <span style="color:#fff;">hellovoyteq.ai</span>
+    </p>
+  </div>
+
+  <script>
+    const target = new Date("2026-01-01T00:00:00+01:00");
+    const out = document.getElementById('countdown');
+
+    function updateCountdown() {
+      const now = new Date();
+      let diff = target.getTime() - now.getTime();
+
+      if (diff <= 0) {
+        out.textContent = "0 days 0 hours 0 minutes 0 seconds";
+        return;
+      }
+
+      const secTotal = Math.floor(diff / 1000);
+      const days = Math.floor(secTotal / 86400);
+      const hours = Math.floor((secTotal % 86400) / 3600);
+      const minutes = Math.floor((secTotal % 3600) / 60);
+      const seconds = secTotal % 60;
+
+      out.textContent = `${days} days ${hours} hours ${minutes} minutes ${seconds} seconds`;
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+</body>
+</html>
